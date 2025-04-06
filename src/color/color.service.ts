@@ -1,26 +1,60 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateColorDto } from './dto/create-color.dto';
 import { UpdateColorDto } from './dto/update-color.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ColorService {
-  create(createColorDto: CreateColorDto) {
-    return 'This action adds a new color';
+  constructor(private prisma:PrismaService){}
+ async create(createColorDto: CreateColorDto) {
+     try {
+          return await this.prisma.color.create({data:createColorDto})
+        } catch (error) {
+          throw new InternalServerErrorException()
+        }
   }
 
-  findAll() {
-    return `This action returns all color`;
+ async findAll() {
+  try {
+    return await this.prisma.color.findMany()
+  } catch (error) {
+    throw new InternalServerErrorException()
+  }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} color`;
+ async findOne(id: string) {
+  try {
+    let find = await this.prisma.color.findUnique({where:{id}})
+    if(!find){
+      return {message:"No data"}
+    }
+    return find
+   } catch (error) {
+    throw new InternalServerErrorException()
+   }
   }
 
-  update(id: number, updateColorDto: UpdateColorDto) {
-    return `This action updates a #${id} color`;
+ async update(id: string, updateColorDto: UpdateColorDto) {
+  try {
+    let find = await this.prisma.color.findUnique({where:{id}})
+    if(!find){
+      return {message:"No data"}
+    }
+   return await this.prisma.color.update({where:{id},data:updateColorDto})
+   } catch (error) {
+    throw new InternalServerErrorException()
+   }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} color`;
+ async remove(id: string) {
+  try {
+    let find = await this.prisma.color.findUnique({where:{id}})
+    if(!find){
+      return {message:"No data"}
+    }
+   return await this.prisma.color.delete({where:{id}})
+   } catch (error) {
+    throw new InternalServerErrorException()
+   }
   }
 }

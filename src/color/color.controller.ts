@@ -19,16 +19,16 @@ export class ColorController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.colorService.findOne(+id);
+    return this.colorService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateColorDto: UpdateColorDto) {
-    return this.colorService.update(+id, updateColorDto);
+    return this.colorService.update(id, updateColorDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.colorService.remove(+id);
+    return this.colorService.remove(id);
   }
 }

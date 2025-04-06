@@ -10,9 +10,11 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { ColorModule } from './color/color.module';
 import { UserModule } from './user/user.module';
+import { MailModule } from './mail/mail.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [UploadsModule, ServeStaticModule.forRoot({rootPath:join(__dirname,"..","uploads"),serveRoot:'/file'}), AuthModule, PrismaModule, CategoryModule, ProductModule, ColorModule, UserModule],
+  imports: [UploadsModule, ServeStaticModule.forRoot({rootPath:join(__dirname,"..","uploads"),serveRoot:'/file'}), AuthModule, PrismaModule, CategoryModule, ProductModule, ColorModule, UserModule, MailModule,JwtModule.register({})],
   controllers: [AppController],
   providers: [AppService],
 })
