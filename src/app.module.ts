@@ -12,9 +12,11 @@ import { ColorModule } from './color/color.module';
 import { UserModule } from './user/user.module';
 import { MailModule } from './mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
-
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-ioredis'
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
-  imports: [UploadsModule, ServeStaticModule.forRoot({rootPath:join(__dirname,"..","uploads"),serveRoot:'/file'}), AuthModule, PrismaModule, CategoryModule, ProductModule, ColorModule, UserModule, MailModule,JwtModule.register({})],
+  imports: [UploadsModule, ServeStaticModule.forRoot({rootPath:join(__dirname,"..","uploads"),serveRoot:'/file'}), AuthModule, PrismaModule, CategoryModule, ProductModule, ColorModule, UserModule, MailModule,JwtModule.register({}),CacheModule.register({ttl:10*1000,store:redisStore,isGlobal:true,host:'172.17.0.2',port:6379}), ScheduleModule.forRoot()],
   controllers: [AppController],
   providers: [AppService],
 })
